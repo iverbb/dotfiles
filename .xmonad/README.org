@@ -1,0 +1,68 @@
+#+TITLE: XMonad Config
+#+PROPERTY: 
+* Table of Contents
+* About
+* Imports
+Importing various xmonad libraries, as well as System.IO to spawn system processes
+#+BEGIN_SRC haskell
+import XMonad
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
+import XMonad.Layout.Spacing
+import XMonad.Util.Run
+import System.IO
+#+END_SRC
+
+* Defaults
+Set terminal as well as superkey
+#+BEGIN_SRC haskell
+
+-- Set Terminal to Alacritty
+myTerminal     = "alacritty"
+
+-- Set super key to win
+myModMask      = mod4Mask
+
+-- Style Border
+myBorderWidth  = 2
+myFocusedBorderColor  = "#000000"
+myNormalBorderColor   = "#000000"
+
+<s
+-- Roman Numerals for workspaces
+myWorkspaces   = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
+#+END_SRC
+
+* Keybinding
+Setup Keybindings
+#+BEGIN_SRC haskell
+myKeys = undefined
+#+END_SRC
+* Layout
+#+BEGIN_SRC haskell
+-- Setup layout
+-- avoidStruts: remove overlapping with xmobar
+-- spacingWithEdge: spacing with same width between windows as distance from edge
+myLayout       = avoidStruts ( spacingWithEdge 5 $ Tall 1 (3/100) (1/2))
+#+END_SRC
+
+* Config
+Setup my config
+#+BEGIN_SRC haskell
+myConfig = def
+  { modMask     = myModMask
+  , terminal    = myTerminal
+  , borderWidth = myBorderWidth
+  , focusedBorderColor = myFocusedBorderColor
+  , layoutHook  = myLayout
+  , workspaces  = myWorkspaces
+  }
+#+END_SRC
+
+* Main
+Run the damn thing
+#+BEGIN_SRC haskell
+main = do
+  xmproc <- spawnPipe "xmobar"
+  xmonad =<< xmobar (docks myConfig)
+#+END_SRC
